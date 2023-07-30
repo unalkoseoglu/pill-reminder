@@ -1,0 +1,33 @@
+{
+    "appBar":{
+        "title":"Pill Reminder"
+    },
+    "home":{
+        "title":"Home",
+        "noreminder":"No Reminder"
+        
+    },
+    "reminder":{
+        "medicinename":"Medicine Name",
+        "medicine":"Paracematol XL2",
+        "amount":"Amount",
+        "mg_ml":"mg/ml",
+        "newreminder":"New Reminder",
+        "addreminder":"Add Reminder",
+        "type":"Type",   
+        "repeat":"Repeat",
+        "day":"Repeat Day",
+        "time":"Time",
+        "ok":"Ok", 
+        "cancel":"Cancel"
+    },
+       "settings":{
+        "title":"Settings",
+        "lang":"Language",
+        "language":"English",
+        "notifications":"Notifications",
+        "darkMode":"Dark Mode",
+        "lightMode":"Light Mode",
+        "soon":"Soon"
+    }
+}

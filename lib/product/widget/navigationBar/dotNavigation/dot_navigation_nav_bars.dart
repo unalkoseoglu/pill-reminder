@@ -92,6 +92,7 @@ class DotNavigationNavBars extends StatelessWidget {
         ? BottomAppBar(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const CircularNotchedRectangle(),
+            notchMargin: 10,
             color: Colors.transparent,
             elevation: 0,
             child: Column(
@@ -103,7 +104,7 @@ class DotNavigationNavBars extends StatelessWidget {
                     padding: paddingR,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(borderRadius!),
-                      border: Border.all(color: context.colorScheme.surface),
+                      border: Border.all(color: context.colorScheme.secondary),
                       color: backgroundColor,
                     ),
                     width: context.dynamicWidth(.8),

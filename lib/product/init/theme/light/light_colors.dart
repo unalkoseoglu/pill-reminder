@@ -16,8 +16,8 @@ final class LightColors {
   static Color black = const Color(0xFF000000);
 
   //* blue => [Color(0xFF2200FF)]
-  static Color blue = const Color(0xFF2200FF);
-  static const Color governorBay = Color(0xff4A55A2);
+  static const Color blueFeather = Color(0xFFAED6F1);
+
   static const Color mayaBlue = Color(0xff72c5f2);
   static const Color pannikin = Color(0xff7895CB);
   static const Color oregonBlue = Color(0xff468fdd);
@@ -38,6 +38,7 @@ final class LightColors {
   static const Color mistyMarsh = Color(0xffD4E2D4);
   static const Color catalan = Color(0xff469597);
   static const Color caulerpaLentillifera = Color(0xff5BA199);
-  static const Color hyperpopGreen = Color(0xff26f79d);
+  static const Color cantonJade = Color(0xffB7E4C7);
+
   static const Color waterfall = Color(0xff3dada0);
 }

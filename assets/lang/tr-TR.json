@@ -1,0 +1,32 @@
+{
+    "appBar":{
+        "title":"İlaç Hatirlatma"
+    },
+"home":{
+    "title":"Ana Sayfa",
+    "noreminder":"Hatırlatıcı Yok"
+},
+"reminder":{
+    "medicinename":"İlaç İsmi",
+    "medicine":"Öksürük Şurubu",
+    "amount":"Miktar",
+    "mg_ml":"mg/ml",
+    "newreminder":"Yeni Hatırlatıcı",
+    "addreminder":"Hatırlatıcı Ekle",
+    "type":"Tip",
+    "repeat":"Tekrar",
+    "day":"Tekrarlanacak Gün",
+    "time":"Zaman",
+    "ok":"Tamam", 
+    "cancel":"İptal et"
+},
+"settings":{
+    "title":"Ayarlar",
+    "lang":"Dil",
+    "language":"Türkçe",
+    "notifications":"Bildirimler",
+    "darkMode":"Karanlık Mod",
+    "lightMode":"Açık Mod",
+    "soon":"Yakında"
+}
+}

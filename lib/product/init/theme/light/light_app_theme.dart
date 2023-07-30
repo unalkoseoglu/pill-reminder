@@ -32,20 +32,19 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
 
   ColorScheme get _appColorScheme => ColorScheme(
         brightness: LightColors.brightnessLight,
-        primary: LightColors.waterfall,
-        secondary: LightColors.red,
+        primary: LightColors.cantonJade,
+        onPrimary: LightColors.waterfall,
+        secondary: LightColors.black,
         onSecondary: LightColors.black,
-        error: LightColors.red,
+        onSurface: LightColors.mayaBlue,
         surface: LightColors.black,
         background: LightColors.waterfall,
         onBackground: LightColors.waterfall,
+        error: LightColors.red,
         onError: LightColors.black,
-        onPrimary: LightColors.waterfall,
-        onSurface: LightColors.black,
       );
 
   AppBarTheme get appBarTheme => AppBarTheme(
-      color: LightColors.white,
       elevation: 0,
       centerTitle: false,
       titleTextStyle:
@@ -61,8 +60,7 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
         subtitleTextStyle: textTheme.bodySmall,
       );
 
-  IconThemeData get iconTheme =>
-      const IconThemeData(color: LightColors.waterfall);
+  IconThemeData get iconTheme => const IconThemeData();
 
   SnackBarThemeData get snackBarTheme => SnackBarThemeData(
       backgroundColor: LightColors.oregonBlue,
