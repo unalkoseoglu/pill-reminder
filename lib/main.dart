@@ -18,7 +18,7 @@ void main() {
       child: EasyLocalization(
         supportedLocales: LangEnum.langs,
         path: AppConstant.LANGUAGE_PATH,
-        startLocale: LangEnum.en.local,
+        startLocale: LangEnum.tr.local,
         child: const MyApp(),
       ),
     ),

@@ -4,16 +4,17 @@
     },
     "home":{
         "title":"Home",
-        "noreminder":"No Reminder"
+        "noReminder":"No Reminder"
         
     },
     "reminder":{
-        "medicinename":"Medicine Name",
+        "medicineName":"Name",
+        "medicineNote":"Note",
         "medicine":"Paracematol XL2",
         "amount":"Amount",
         "mg_ml":"mg/ml",
-        "newreminder":"New Reminder",
-        "addreminder":"Add Reminder",
+        "newReminder":"New Reminder",
+        "addrReminder":"Add Reminder",
         "type":"Type",   
         "repeat":"Repeat",
         "day":"Repeat Day",

@@ -34,7 +34,7 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
         brightness: LightColors.brightnessLight,
         primary: LightColors.cantonJade,
         onPrimary: LightColors.waterfall,
-        secondary: LightColors.black,
+        secondary: LightColors.blueFeather,
         onSecondary: LightColors.black,
         onSurface: LightColors.mayaBlue,
         surface: LightColors.black,

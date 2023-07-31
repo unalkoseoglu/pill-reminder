@@ -18,22 +18,24 @@ class TabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
         routes: const [HomeRoute(), ReminderRoute()],
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: context.colorScheme.primary,
-          shape: const CircleBorder(),
-          onPressed: () {
-            context.navigateTo(const ReminderRoute());
-          },
-          child: const FaIcon(
-            FontAwesomeIcons.plus,
-            color: Colors.white,
-            size: 30,
-          ),
-        ),
+        floatingActionButton: MediaQuery.of(context).viewInsets.bottom != 0
+            ? const SizedBox.shrink()
+            : FloatingActionButton(
+                backgroundColor: context.colorScheme.primary,
+                shape: const CircleBorder(),
+                onPressed: () {
+                  context.navigateTo(const ReminderRoute());
+                },
+                child: const FaIcon(
+                  FontAwesomeIcons.plus,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
         appBarBuilder: (context, tabsRouter) {
           return AppBar(
             title: Text(
-              LocaleKeys.appBar_title.tr(),
+              LocaleKeys.appBarTitle.tr(),
               style: context.textTheme.displayLarge?.copyWith(
                 fontFamily: GoogleFonts.rubikMoonrocks().fontFamily,
               ),
