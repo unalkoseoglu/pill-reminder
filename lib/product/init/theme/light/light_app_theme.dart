@@ -28,6 +28,8 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
         textTheme: textTheme.data,
         listTileTheme: listTileTheme,
         snackBarTheme: snackBarTheme,
+        elevatedButtonTheme: elevatedButtonThemeData,
+        outlinedButtonTheme: outlinedButtonThemeData,
       );
 
   ColorScheme get _appColorScheme => ColorScheme(
@@ -59,7 +61,28 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
             textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.normal),
         subtitleTextStyle: textTheme.bodySmall,
       );
-
+  ElevatedButtonThemeData get elevatedButtonThemeData =>
+      ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+        elevation: 0,
+        padding: const EdgeInsets.all(12).copyWith(left: 20, right: 20),
+        backgroundColor: _appColorScheme.onPrimary,
+        foregroundColor: LightColors.white,
+        textStyle: textTheme.displaySmall,
+      ));
+  OutlinedButtonThemeData get outlinedButtonThemeData =>
+      OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+        elevation: 0,
+        padding: const EdgeInsets.all(14).copyWith(left: 20, right: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        side: const BorderSide(
+          width: 2,
+          color: LightColors.cantonJade,
+        ),
+        foregroundColor: LightColors.black,
+        textStyle: textTheme.bodyMedium,
+      ));
   IconThemeData get iconTheme => const IconThemeData();
 
   SnackBarThemeData get snackBarTheme => SnackBarThemeData(

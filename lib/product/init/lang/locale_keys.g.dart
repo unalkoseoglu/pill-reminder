@@ -15,7 +15,10 @@ abstract class LocaleKeys {
   static const reminderNewReminder = 'reminder.newReminder';
   static const reminderAddReminder = 'reminder.addReminder';
   static const reminderType = 'reminder.type';
-  static const reminderRepeat = 'reminder.repeat';
+  static const reminderRepeatDay = 'reminder.repeatDay';
+  static const reminderMaxRepeatDay = 'reminder.maxRepeatDay';
+  static const reminderMaxRepeatDayError = 'reminder.maxRepeatDayError';
+  static const reminderSelectDays = 'reminder.selectDays';
   static const reminderDay = 'reminder.day';
   static const reminderTime = 'reminder.time';
   static const reminder = 'reminder';

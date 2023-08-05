@@ -6,7 +6,6 @@ import 'package:pill_reminder/feature/home/viewModel/home_view_model.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_size_extension.dart';
-import 'package:pill_reminder/product/widget/card/pill_card.dart';
 import 'package:pill_reminder/product/widget/date/date_time_button.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +31,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomeViewModel>(
         create: (context) => HomeViewModel(),
-        builder: (context, snapshot) {
+        builder: (context, child) {
           final List<DateTime> tabDates =
               context.watch<HomeViewModel>().tabDates;
           _tabListener(context, tabDates);
@@ -56,20 +55,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         controller: _tabController,
                         children: tabDates
                             .map(
-                              (e) => ListView.builder(
-                                padding: context.paddingNormal,
-                                itemCount: 2,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding: context.onlyBottomPaddingLow,
-                                    child: const PillCard(
-                                        image: "capsule",
-                                        name: "Parol",
-                                        amount: "2",
-                                        time: "09:45"),
-                                  );
-                                },
-                              ),
+                              (e) => const Text("data"),
                             )
                             .toList()),
                   )

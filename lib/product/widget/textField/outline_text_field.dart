@@ -28,6 +28,7 @@ class OutlineTextField extends StatelessWidget {
     this.readOnly = false,
     this.errorText,
     this.onTap,
+    this.prefixIcon,
   });
   final String? label;
   final String? hintText;
@@ -45,6 +46,7 @@ class OutlineTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final TextStyle? textStyle;
   final TextAlign? textAlign;
   final TextInputAction? textInputAction;
@@ -80,10 +82,12 @@ class OutlineTextField extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
           hintText: hintText,
+          prefixIconColor: context.colorScheme.onPrimary,
           focusedBorder: _outlineInputBorder(),
           enabledBorder: _outlineInputBorder(),
           border: _outlineInputBorder(),
           prefix: prefix,
+          prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
         ),
         buildCounter: isMaxLengthCounter
