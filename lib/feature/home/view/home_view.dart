@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
@@ -69,7 +69,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     return ListTile(
       title: Center(
         child: Text(
-          DateFormat("d MMMM EEEE, y", context.locale.toString())
+          DateFormat("d MMMM EEEE, y", Intl.defaultLocale)
               .format(DateTime.now()),
           style: context.textTheme.titleMedium
               ?.copyWith(fontWeight: FontWeight.bold),

@@ -1,18 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pill_reminder/core/extension/image_extension.dart';
 import 'package:pill_reminder/feature/reminder/viewModel/reminder_view_model.dart';
+import 'package:pill_reminder/generated/l10n.dart';
 import 'package:pill_reminder/product/constant/duration_constatn.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_size_extension.dart';
 import 'package:pill_reminder/product/init/app/app_constant.dart';
-import 'package:pill_reminder/product/init/lang/locale_keys.g.dart';
 import 'package:pill_reminder/product/widget/button/week_days_selected_button.dart';
 import 'package:pill_reminder/product/widget/card/pill_card.dart';
 import 'package:pill_reminder/product/widget/textField/outline_text_field.dart';
@@ -41,7 +40,7 @@ class _ReminderViewState extends State<ReminderView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          LocaleKeys.appBarTitle.tr(),
+          S.current.appBarTitle,
           style: context.textTheme.displayLarge?.copyWith(
             fontFamily: GoogleFonts.rubikMoonrocks().fontFamily,
           ),
@@ -111,7 +110,7 @@ class _ReminderViewState extends State<ReminderView> {
                     children: [
                       OutlineTextField(
                         prefixIcon: const Icon(FontAwesomeIcons.pills),
-                        label: LocaleKeys.reminderMedicineName.tr(),
+                        label: S.current.reminderMedicineName,
                         textInputAction: TextInputAction.next,
                         onChanged: (value) {
                           setState(() {
@@ -121,7 +120,7 @@ class _ReminderViewState extends State<ReminderView> {
                       ),
                       OutlineTextField(
                         prefixIcon: const Icon(FontAwesomeIcons.feather),
-                        label: LocaleKeys.reminderMedicineNote.tr(),
+                        label: S.current.reminderMedicineNote,
                         textInputAction: TextInputAction.next,
                         onChanged: (value) {
                           setState(() {
@@ -131,7 +130,7 @@ class _ReminderViewState extends State<ReminderView> {
                       ),
                       OutlineTextField(
                         prefixIcon: const Icon(FontAwesomeIcons.grip),
-                        label: LocaleKeys.reminderAmount.tr(),
+                        label: S.current.reminderAmount,
                         textInputAction: TextInputAction.next,
                         onChanged: (value) {
                           setState(() {
@@ -159,7 +158,7 @@ class _ReminderViewState extends State<ReminderView> {
                                 },
                               ),
                               title: Text(
-                                LocaleKeys.reminderRepeatDay.tr(),
+                                S.current.reminderRepeatDay,
                                 style: context.textTheme.titleMedium,
                               ),
                             ),
@@ -182,7 +181,7 @@ class _ReminderViewState extends State<ReminderView> {
                                 },
                               ),
                               title: Text(
-                                LocaleKeys.reminderSelectDays.tr(),
+                                S.current.reminderSelectDays,
                                 style: context.textTheme.titleMedium,
                               ),
                             ),
@@ -217,7 +216,7 @@ class _ReminderViewState extends State<ReminderView> {
                       },
                       prefixIcon: const Icon(FontAwesomeIcons.solidClock),
                       readOnly: true,
-                      label: LocaleKeys.reminderTime.tr()),
+                      label: S.current.reminderTime),
                 ),
               ),
             ]),
@@ -250,8 +249,8 @@ class _ReminderViewState extends State<ReminderView> {
         fontWeight: FontWeight.bold,
       ),
       cancelStyle: context.textTheme.bodyMedium!,
-      okText: LocaleKeys.reminderOk.tr(),
-      cancelText: LocaleKeys.reminderCancel.tr(),
+      okText: S.current.reminderOk,
+      cancelText: S.current.reminderCancel,
       accentColor: context.colorScheme.surface,
       onChange: (value) {},
     );
@@ -260,14 +259,13 @@ class _ReminderViewState extends State<ReminderView> {
   OutlineTextField _repeatDayTextfield(BuildContext context) {
     return OutlineTextField(
       prefixIcon: const Icon(FontAwesomeIcons.solidCalendarDays),
-      label: LocaleKeys.reminderDay.tr(),
-      hintText: LocaleKeys.reminderMaxRepeatDay.tr(),
+      label: S.current.reminderDay,
+      hintText: S.current.reminderMaxRepeatDay,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.number,
       isMaxLengthCounter: true,
-      errorText:
-          (_repeatDay > 7) ? LocaleKeys.reminderMaxRepeatDayError.tr() : null,
+      errorText: (_repeatDay > 7) ? S.current.reminderMaxRepeatDayError : null,
       maxLength: 1,
       onChanged: (value) {
         if (value == "") return;
@@ -285,6 +283,6 @@ class _ReminderViewState extends State<ReminderView> {
         onPressed: () {
           context.read<ReminderViewModel>().addReminder(context);
         },
-        child: Center(child: Text(LocaleKeys.reminderAddReminder.tr())));
+        child: Center(child: Text(S.current.reminderAddReminder)));
   }
 }

@@ -1,15 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pill_reminder/core/constant/app_constant.dart';
 import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
 import 'package:pill_reminder/feature/home/viewModel/home_view_model.dart';
 import 'package:pill_reminder/feature/reminder/viewModel/reminder_view_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
+import 'package:pill_reminder/generated/l10n.dart';
 import 'package:pill_reminder/product/enum/lang_enum.dart';
 import 'package:pill_reminder/product/init/app/app_init.dart';
 import 'package:pill_reminder/product/init/navigation/auto_router.dart';
 import 'package:pill_reminder/product/init/theme/light/light_app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   AppInit.initialize();
@@ -21,12 +21,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ReminderViewModel()),
       ],
-      child: EasyLocalization(
-        supportedLocales: LangEnum.langs,
-        path: AppCoreConstant.LANGUAGE_PATH,
-        startLocale: LangEnum.tr.local,
-        child: const MyApp(),
-      ),
+      child: const MyApp(),
     ),
   );
 }
@@ -46,9 +41,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'Material App',
       theme: LightAppTheme.instance.theme,
-      supportedLocales: context.supportedLocales,
-      localizationsDelegates: context.localizationDelegates,
-      locale: context.locale,
+      locale: LangEnum.tr.local,
+      localizationsDelegates: const [
+        S.delegate,
+        ...AppLocalizations.localizationsDelegates
+      ],
+      supportedLocales: LangEnum.langs,
       routerConfig: appRouter.config(),
     );
   }

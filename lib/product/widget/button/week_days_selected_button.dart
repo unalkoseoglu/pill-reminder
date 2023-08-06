@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pill_reminder/feature/reminder/viewModel/reminder_view_model.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
@@ -62,6 +62,6 @@ class _WeekDaysSelectedButtonState extends State<WeekDaysSelectedButton> {
     // Seçilen günün ayındaki gün sayısına göre tarihi ayarlayalım.
     date = date.add(Duration(days: offset));
 
-    return DateFormat('EEEE', context.locale.languageCode).format(date);
+    return DateFormat('EEEE', Intl.defaultLocale).format(date);
   }
 }

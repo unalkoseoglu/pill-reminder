@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
 import 'package:pill_reminder/product/extension/context/context_border_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';

@@ -56,7 +56,7 @@ class DateTimeCard extends StatelessWidget {
 
   Text _monthText(BuildContext context) {
     return Text(
-      DateFormat("MMM", context.locale.toString()).format(date).toUpperCase(),
+      DateFormat("MMM", Intl.defaultLocale).format(date).toUpperCase(),
       maxLines: 1,
       style: context.textTheme.bodySmall!.copyWith(
           color: selectedTextColor ?? Colors.transparent,
@@ -90,7 +90,7 @@ class DateTimeCard extends StatelessWidget {
 
   Text _dayNameText(BuildContext context) {
     return Text(
-      DateFormat("E", context.locale.toString()).format(date),
+      DateFormat("E", Intl.defaultLocale).format(date),
       textScaleFactor: context.textScaleFactor,
       maxLines: 1,
       style: context.textTheme.titleSmall!

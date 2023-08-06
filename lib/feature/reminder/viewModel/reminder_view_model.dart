@@ -1,16 +1,20 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
 import 'package:pill_reminder/product/utility/database/operation/hive_operation.dart';
+import 'package:pill_reminder/product/utility/notification/notification_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ReminderViewModel extends ChangeNotifier {
   ReminderViewModel() {
     hiveOperation = HiveOperation<ReminderModel>();
+    _notificationManager = NotificationManager();
   }
   late HiveOperation<ReminderModel> hiveOperation;
+  late INotificationManager _notificationManager;
 
   final DateTime now = DateTime.now().add(const Duration(days: -1));
   List<DateTime> selectedDays = <DateTime>[];
@@ -56,7 +60,10 @@ class ReminderViewModel extends ChangeNotifier {
           ),
           date: DateTime.now(),
         ));
-    final items = context.read<TabViewModel>().hiveOperation.getAllItem();
-    print(items?.length);
+    _notificationManager.showNotification(
+      title: "title",
+      body: "body",
+      notificationLayout: NotificationLayout.Inbox,
+    );
   }
 }
