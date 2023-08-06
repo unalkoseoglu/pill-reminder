@@ -17,9 +17,9 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ReminderModel(
-      uuid: fields[0] as String?,
-      pill: fields[1] as PillModel?,
-      date: fields[2] as DateTime?,
+      uuid: fields[0] as String,
+      pill: fields[1] as PillModel,
+      date: fields[2] as DateTime,
       selectDayList: (fields[3] as List?)?.cast<DateTime>(),
       repeatDay: fields[4] as int?,
       isTake: fields[5] as bool?,

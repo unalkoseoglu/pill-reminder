@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
-import 'package:pill_reminder/product/utility/database/core/hive_operation.dart';
+import 'package:pill_reminder/feature/tab/tab_view_model.dart';
+import 'package:pill_reminder/product/utility/database/operation/hive_operation.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ReminderViewModel extends ChangeNotifier {
   ReminderViewModel() {
-    _hiveOperation = HiveOperation();
+    hiveOperation = HiveOperation<ReminderModel>();
   }
+  late HiveOperation<ReminderModel> hiveOperation;
 
-  late HiveOperation<ReminderModel> _hiveOperation;
   final DateTime now = DateTime.now().add(const Duration(days: -1));
   List<DateTime> selectedDays = <DateTime>[];
   int repeatCountDay = 1;
@@ -40,17 +42,21 @@ class ReminderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addReminder() async {
+  Future<void> addReminder(BuildContext context,
+      {ReminderModel? reminderModel}) async {
     var uuid = const Uuid();
-    _hiveOperation.addItem(ReminderModel(
-      uuid: uuid.v4(),
-      pill: PillModel(
-        id: uuid.v4().hashCode,
-        name: "Parol",
-        note: "Öğleden önce",
-        amount: "1",
-      ),
-      date: DateTime.now(),
-    ));
+
+    await context.read<TabViewModel>().hiveOperation.addItem(ReminderModel(
+          uuid: uuid.v4(),
+          pill: PillModel(
+            id: uuid.v4().hashCode,
+            name: "Parol",
+            note: "Öğleden önce",
+            amount: "1",
+          ),
+          date: DateTime.now(),
+        ));
+    final items = context.read<TabViewModel>().hiveOperation.getAllItem();
+    print(items?.length);
   }
 }

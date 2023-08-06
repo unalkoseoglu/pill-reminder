@@ -260,7 +260,7 @@ class _ReminderViewState extends State<ReminderView> {
   OutlineTextField _repeatDayTextfield(BuildContext context) {
     return OutlineTextField(
       prefixIcon: const Icon(FontAwesomeIcons.solidCalendarDays),
-      label: LocaleKeys.reminderRepeatDay.tr(),
+      label: LocaleKeys.reminderDay.tr(),
       hintText: LocaleKeys.reminderMaxRepeatDay.tr(),
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textInputAction: TextInputAction.done,
@@ -283,7 +283,7 @@ class _ReminderViewState extends State<ReminderView> {
   ElevatedButton _addReminderButton() {
     return ElevatedButton(
         onPressed: () {
-          context.read<ReminderViewModel>().addReminder();
+          context.read<ReminderViewModel>().addReminder(context);
         },
         child: Center(child: Text(LocaleKeys.reminderAddReminder.tr())));
   }

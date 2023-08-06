@@ -9,11 +9,11 @@ part 'reminder_model.g.dart';
 @HiveType(typeId: HiveTypes.reminderModelHiveType)
 class ReminderModel with EquatableMixin, HiveModelMixin {
   @HiveField(0)
-  String? uuid;
+  String uuid;
   @HiveField(1)
-  PillModel? pill;
+  PillModel pill;
   @HiveField(2)
-  DateTime? date;
+  DateTime date;
   @HiveField(3)
   List<DateTime>? selectDayList;
   @HiveField(4)
@@ -26,9 +26,9 @@ class ReminderModel with EquatableMixin, HiveModelMixin {
   bool? isSkip;
 
   ReminderModel({
-    this.uuid,
-    this.pill,
-    this.date,
+    required this.uuid,
+    required this.pill,
+    required this.date,
     this.selectDayList,
     this.repeatDay,
     this.isTake,
@@ -46,9 +46,9 @@ class ReminderModel with EquatableMixin, HiveModelMixin {
   String get key => userKey;
 
   ReminderModel copyWith({
-    String? uuid,
-    PillModel? pill,
-    DateTime? date,
+    required String uuid,
+    required PillModel pill,
+    required DateTime date,
     List<DateTime>? selectDayList,
     int? repeatDay,
     bool? isTake,
@@ -56,9 +56,9 @@ class ReminderModel with EquatableMixin, HiveModelMixin {
     bool? isSkip,
   }) {
     return ReminderModel(
-      uuid: uuid ?? this.uuid,
-      pill: pill ?? this.pill,
-      date: date ?? this.date,
+      uuid: uuid,
+      pill: pill,
+      date: date,
       selectDayList: selectDayList ?? this.selectDayList,
       repeatDay: repeatDay ?? this.repeatDay,
       isTake: isTake ?? this.isTake,

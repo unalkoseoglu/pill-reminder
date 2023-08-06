@@ -17,9 +17,10 @@
     "type":"Tip",
     "repeat":"Tekrar",
     "repeatDay":"Tekrarlanacak Gün",
+    "day":"Gün",
     "maxRepeatDay":"En fazla 7 gün tekrar yapabilirsiniz.",
     "maxRepeatDayError":"Lütfen 7 günden fazla girmeyiniz.",
-    "selectDays":"Günleri seç",
+    "selectDays":"Belirli günlerde",
     "time":"Zaman",
     "ok":"Tamam", 
     "cancel":"İptal et"

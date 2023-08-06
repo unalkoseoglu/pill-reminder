@@ -1,34 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pill_reminder/product/constant/duration_constatn.dart';
 
 class DateViewModel extends ChangeNotifier {
+  DateViewModel() {
+    _dates();
+  }
   DateTime initialSelectedDate = DateTime.now();
   bool isSelected = false;
-  bool isDeactivated = false;
+  late final List<DateTime> tabDates;
+  final int _daysCount = 20;
 
-  void Function(DateTime selectedDate)? onDateChange;
+  bool compareInitialDate(DateTime date) {
+    return DateFormat.yMMMEd().format(initialSelectedDate) ==
+        DateFormat.yMMMEd().format(date);
+  }
 
-  void startDateSelect(int index) {}
-
-  bool compareDate(DateTime date1, DateTime date2) {
-    return date1.day == date2.day &&
-        date1.month == date2.month &&
-        date1.year == date2.year;
+  void _dates() {
+    tabDates = List.generate(_daysCount, (index) {
+      final now = DateTime.now().add(Duration(days: index));
+      return now;
+    });
+    notifyListeners();
   }
 
   void selectDate(DateTime selectedDate) {
     isSelect();
-    print(selectedDate);
-    if (isDeactivated) return;
-    if (onDateChange != null) {
-      onDateChange!(selectedDate);
-    }
+    print("as: $selectedDate");
     initialSelectedDate = selectedDate;
-
     notifyListeners();
   }
 
   void isSelect() {
     isSelected = !isSelected;
     notifyListeners();
+  }
+
+  void tabListener(BuildContext context, TabController tabController) {
+    tabController.addListener(
+      () {
+        final currentIndex = tabController.index;
+        tabController.animateTo(currentIndex,
+            duration: DurationConstant.millisecond200);
+        selectDate(tabDates[currentIndex]);
+      },
+    );
   }
 }

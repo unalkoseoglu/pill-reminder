@@ -18,9 +18,10 @@
         "type":"Type",   
         "repeat":"Repeat",
         "repeatDay":"Repeat Day",
+        "day":"Day",
         "maxRepeatDay":"You can repeat maximum 7 days",
         "maxRepeatDayError":"Please do not enter for more than 7 days.",
-        "selectDays":"Select days",
+        "selectDays":"Certain days",
         "time":"Time",
         "ok":"Ok", 
         "cancel":"Cancel"
