@@ -9,7 +9,6 @@ class HiveOperation<T extends HiveModelMixin> with HiveManagerMixin<T> {
   T? getItem(String key) => _box.get(key);
 
   Future<void> addItem(T model) async {
-    print(_box.isOpen);
     await _box.add(model);
   }
 

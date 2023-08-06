@@ -14,14 +14,21 @@ class WeekDaysSelectedButton extends StatefulWidget {
 }
 
 class _WeekDaysSelectedButtonState extends State<WeekDaysSelectedButton> {
+  final List<int> defaultDisplayedDays = [
+    DateTime.tuesday,
+    DateTime.wednesday,
+    DateTime.thursday,
+    DateTime.friday,
+    DateTime.saturday,
+    DateTime.sunday,
+    DateTime.monday,
+  ];
+
   @override
   Widget build(BuildContext context) {
     DateTime now = Provider.of<ReminderViewModel>(context, listen: false).now;
-    List<DateTime> selectedDays =
+    List<DateTime>? selectedDays =
         context.watch<ReminderViewModel>().selectedDays;
-    final List<int> defaultDisplayedDays =
-        Provider.of<ReminderViewModel>(context, listen: false)
-            .defaultDisplayedDays;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

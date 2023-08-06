@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pill_reminder/core/extension/image_extension.dart';
+import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
+import 'package:pill_reminder/feature/reminder/view/mixin/reminder_view_mixin.dart';
 import 'package:pill_reminder/feature/reminder/viewModel/reminder_view_model.dart';
 import 'package:pill_reminder/generated/l10n.dart';
 import 'package:pill_reminder/product/constant/duration_constatn.dart';
@@ -12,10 +14,12 @@ import 'package:pill_reminder/product/extension/context/context_general_extensio
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_size_extension.dart';
 import 'package:pill_reminder/product/init/app/app_constant.dart';
+import 'package:pill_reminder/product/init/theme/light/light_colors.dart';
 import 'package:pill_reminder/product/widget/button/week_days_selected_button.dart';
 import 'package:pill_reminder/product/widget/card/pill_card.dart';
 import 'package:pill_reminder/product/widget/textField/outline_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 enum _CourseDuration { every, selectedDays }
 
@@ -27,11 +31,11 @@ class ReminderView extends StatefulWidget {
   State<ReminderView> createState() => _ReminderViewState();
 }
 
-class _ReminderViewState extends State<ReminderView> {
+class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
   String? _pillName;
   String? _pillNote;
   String? _pillAmount;
-  int _repeatDay = 1;
+  final int _repeatDay = 1;
   _CourseDuration _courseDuration = _CourseDuration.every;
 
   @override
@@ -71,7 +75,7 @@ class _ReminderViewState extends State<ReminderView> {
                             width: context.dynamicWidth(.8),
                           ),
                         ),
-                        ((_pillName?.isNotEmpty ?? false))
+                        ((nameController.text.isNotEmpty))
                             ? Positioned(
                                 left: 0,
                                 right: 0,
@@ -80,14 +84,33 @@ class _ReminderViewState extends State<ReminderView> {
                                   padding: context.paddingNormal,
                                   child: PillCard(
                                     image: "capsule",
-                                    name: _pillName!,
-                                    note: _pillNote,
-                                    amount: _pillAmount ?? "",
-                                    time: "09:45",
+                                    name: nameController.text,
+                                    note: noteController.text,
+                                    amount: amountController.text,
+                                    time: context
+                                        .watch<ReminderViewModel>()
+                                        .timeController
+                                        .text,
                                   ),
                                 ),
                               )
                             : const SizedBox.shrink(),
+                        if (repeatDayController.text.isNotEmpty)
+                          Positioned(
+                            right: 10,
+                            bottom: context.dynamicHeight(.11),
+                            child: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: context.colorScheme.onPrimary,
+                              child: Text(
+                                "${repeatDayController.text}X",
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: LightColors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                     secondChild: ((_pillName?.isNotEmpty ?? false))
@@ -98,7 +121,10 @@ class _ReminderViewState extends State<ReminderView> {
                               name: _pillName!,
                               note: _pillNote,
                               amount: _pillAmount ?? "",
-                              time: "09:45",
+                              time: context
+                                  .watch<ReminderViewModel>()
+                                  .timeController
+                                  .text,
                             ),
                           )
                         : const SizedBox.shrink())),
@@ -109,33 +135,37 @@ class _ReminderViewState extends State<ReminderView> {
                   Column(
                     children: [
                       OutlineTextField(
+                        controller: nameController,
                         prefixIcon: const Icon(FontAwesomeIcons.pills),
                         label: S.current.reminderMedicineName,
                         textInputAction: TextInputAction.next,
-                        onChanged: (value) {
-                          setState(() {
-                            _pillName = value;
-                          });
+                        onChanged: (text) {
+                          context
+                              .read<ReminderViewModel>()
+                              .changeTextController(text, nameController.text);
                         },
                       ),
                       OutlineTextField(
+                        controller: noteController,
                         prefixIcon: const Icon(FontAwesomeIcons.feather),
                         label: S.current.reminderMedicineNote,
                         textInputAction: TextInputAction.next,
-                        onChanged: (value) {
-                          setState(() {
-                            _pillNote = value;
-                          });
+                        onChanged: (text) {
+                          context
+                              .read<ReminderViewModel>()
+                              .changeTextController(text, noteController.text);
                         },
                       ),
                       OutlineTextField(
+                        controller: amountController,
                         prefixIcon: const Icon(FontAwesomeIcons.grip),
                         label: S.current.reminderAmount,
                         textInputAction: TextInputAction.next,
-                        onChanged: (value) {
-                          setState(() {
-                            _pillAmount = value;
-                          });
+                        onChanged: (text) {
+                          context
+                              .read<ReminderViewModel>()
+                              .changeTextController(
+                                  text, amountController.text);
                         },
                       ),
                       Row(
@@ -209,14 +239,7 @@ class _ReminderViewState extends State<ReminderView> {
               Expanded(
                 child: Padding(
                   padding: context.horizontalPaddingNormal,
-                  child: OutlineTextField(
-                      onTap: () {
-                        //? Show Time Picker
-                        Navigator.of(context).push(_showTimePicker(context));
-                      },
-                      prefixIcon: const Icon(FontAwesomeIcons.solidClock),
-                      readOnly: true,
-                      label: S.current.reminderTime),
+                  child: _timeSelectedTextField(context),
                 ),
               ),
             ]),
@@ -230,6 +253,18 @@ class _ReminderViewState extends State<ReminderView> {
         ),
       ),
     );
+  }
+
+  OutlineTextField _timeSelectedTextField(BuildContext context) {
+    return OutlineTextField(
+        controller: context.watch<ReminderViewModel>().timeController,
+        onTap: () {
+          //? Show Time Picker
+          Navigator.of(context).push(_showTimePicker(context));
+        },
+        prefixIcon: const Icon(FontAwesomeIcons.solidClock),
+        readOnly: true,
+        label: S.current.reminderTime);
   }
 
   _showTimePicker(BuildContext context) {
@@ -252,12 +287,13 @@ class _ReminderViewState extends State<ReminderView> {
       okText: S.current.reminderOk,
       cancelText: S.current.reminderCancel,
       accentColor: context.colorScheme.surface,
-      onChange: (value) {},
+      onChange: context.read<ReminderViewModel>().selectedTime,
     );
   }
 
   OutlineTextField _repeatDayTextfield(BuildContext context) {
     return OutlineTextField(
+      controller: repeatDayController,
       prefixIcon: const Icon(FontAwesomeIcons.solidCalendarDays),
       label: S.current.reminderDay,
       hintText: S.current.reminderMaxRepeatDay,
@@ -265,13 +301,15 @@ class _ReminderViewState extends State<ReminderView> {
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.number,
       isMaxLengthCounter: true,
-      errorText: (_repeatDay > 7) ? S.current.reminderMaxRepeatDayError : null,
+      errorText: (repeatDayController.text.length > 7)
+          ? S.current.reminderMaxRepeatDayError
+          : null,
       maxLength: 1,
       onChanged: (value) {
-        if (value == "") return;
-        setState(() {
-          _repeatDay = int.parse(value);
-        });
+        context
+            .read<ReminderViewModel>()
+            .changeTextController(value, amountController.text);
+        if (value.isEmpty) return;
         if (int.parse(value) > 7) return;
         FocusScope.of(context).unfocus();
       },
@@ -280,9 +318,22 @@ class _ReminderViewState extends State<ReminderView> {
 
   ElevatedButton _addReminderButton() {
     return ElevatedButton(
-        onPressed: () {
-          context.read<ReminderViewModel>().addReminder(context);
-        },
+        onPressed: nameController.text.isNotEmpty
+            ? () {
+                var uuid = const Uuid();
+
+                context.read<ReminderViewModel>().addReminder(
+                      context,
+                      pillModel: PillModel(
+                        id: uuid.v4().hashCode,
+                        name: nameController.text,
+                        note: noteController.text,
+                        amount: amountController.text,
+                      ),
+                      repeatDay: repeatDayController.text,
+                    );
+              }
+            : null,
         child: Center(child: Text(S.current.reminderAddReminder)));
   }
 }

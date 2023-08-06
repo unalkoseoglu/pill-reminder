@@ -33,8 +33,9 @@ class _DateTimeButtonState extends State<DateTimeButton> {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime date = context.watch<DateViewModel>().initialSelectedDate;
     bool isSelected = context.watch<DateViewModel>().isSelected =
-        context.watch<DateViewModel>().compareInitialDate(widget.date);
+        context.watch<DateViewModel>().compareInitialDate(date, widget.date);
     return DateTimeCard(
       selectionColor:
           isSelected ? selectionColors : context.colorScheme.primary,

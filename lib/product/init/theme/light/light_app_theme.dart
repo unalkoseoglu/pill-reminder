@@ -66,6 +66,7 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
           style: ElevatedButton.styleFrom(
         elevation: 0,
         padding: const EdgeInsets.all(12).copyWith(left: 20, right: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         backgroundColor: _appColorScheme.onPrimary,
         foregroundColor: LightColors.white,
         textStyle: textTheme.displaySmall,

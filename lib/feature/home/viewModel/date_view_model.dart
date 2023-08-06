@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pill_reminder/product/constant/duration_constatn.dart';
 
 class DateViewModel extends ChangeNotifier {
@@ -11,9 +10,10 @@ class DateViewModel extends ChangeNotifier {
   late final List<DateTime> tabDates;
   final int _daysCount = 20;
 
-  bool compareInitialDate(DateTime date) {
-    return DateFormat.yMMMEd().format(initialSelectedDate) ==
-        DateFormat.yMMMEd().format(date);
+  bool compareInitialDate(DateTime dateOne, DateTime dateTwo) {
+    return dateOne.day == dateTwo.day &&
+        dateOne.month == dateTwo.month &&
+        dateOne.year == dateTwo.year;
   }
 
   void _dates() {

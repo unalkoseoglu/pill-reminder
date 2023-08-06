@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
@@ -49,16 +50,32 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ),
             ),
             Flexible(
-              child: TabBarView(controller: _tabController, children: [
-                ..._tabDates.map(
-                  (e) {
-                    return context.read<DateViewModel>().compareInitialDate(e)
-                        ? const ReminderListBuilder()
-                        : const SizedBox.shrink();
-                  },
-                ).toList()
-              ]),
-            )
+              child: ValueListenableBuilder<Box<ReminderModel>>(
+                  valueListenable: context
+                      .watch<TabViewModel>()
+                      .hiveOperation
+                      .listenToReminder(),
+                  builder: (context, value, child) {
+                    final List<ReminderModel> reminderList =
+                        value.values.toList();
+                    return TabBarView(controller: _tabController, children: [
+                      ..._tabDates.map(
+                        (e) {
+                          return Column(
+                            children: [
+                              Flexible(
+                                child: ReminderListBuilder(
+                                  reminderList: reminderList,
+                                ),
+                              ),
+                              context.emptySizedHeightBoxHigh,
+                            ],
+                          );
+                        },
+                      ).toList()
+                    ]);
+                  }),
+            ),
           ],
         ),
       ),
@@ -107,34 +124,30 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 }
 
 class ReminderListBuilder extends StatelessWidget {
-  const ReminderListBuilder({super.key});
-
+  const ReminderListBuilder({super.key, required this.reminderList});
+  final List<ReminderModel> reminderList;
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     final DateTime date = context.watch<DateViewModel>().initialSelectedDate;
-    return ValueListenableBuilder(
-      valueListenable:
-          context.watch<TabViewModel>().hiveOperation.listenToReminder(),
-      builder: (context, value, child) {
-        final List<ReminderModel> reminderList = value.values.toList();
-
-        return ListView.builder(
-          itemCount: reminderList.length,
-          padding: context.paddingNormal,
-          itemBuilder: (BuildContext context, int index) {
-            return DateFormat.yMMMEd().format(date) ==
-                    DateFormat.yMMMEd().format(reminderList[index].date)
-                ? Padding(
-                    padding: context.onlyBottomPaddingNormal,
-                    child: PillCard(
-                        image: "capsule",
-                        name: reminderList[index].pill.name ?? "",
-                        amount: reminderList[index].pill.amount ?? "",
-                        time: DateFormat.Hm().format(reminderList[index].date)),
-                  )
-                : const SizedBox.shrink();
-          },
-        );
+    return ListView.builder(
+      itemCount: reminderList.length,
+      padding: context.paddingNormal,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return context
+                .read<DateViewModel>()
+                .compareInitialDate(date, reminderList[index].date)
+            ? Padding(
+                padding: context.onlyBottomPaddingNormal,
+                child: PillCard(
+                    image: "capsule",
+                    name: reminderList[index].pill.name ?? "",
+                    amount: reminderList[index].pill.amount ?? "",
+                    time: DateFormat.Hm().format(reminderList[index].date)),
+              )
+            : const SizedBox.shrink();
       },
     );
   }

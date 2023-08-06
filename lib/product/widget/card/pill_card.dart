@@ -13,11 +13,13 @@ class PillCard extends StatelessWidget {
       required this.name,
       required this.amount,
       required this.time,
-      this.note});
+      this.note,
+      this.repeatDay});
   final String image;
   final String name;
   final String? note;
   final String amount;
+  final String? repeatDay;
   final String time;
   @override
   Widget build(BuildContext context) {
@@ -116,16 +118,6 @@ class PillCard extends StatelessWidget {
         )
       ],
     );
-  }
-
-  FloatingActionButton _takeButton(BuildContext context) {
-    return FloatingActionButton.small(
-        backgroundColor: context.colorScheme.primary,
-        onPressed: () {},
-        child: FaIcon(
-          FontAwesomeIcons.check,
-          color: LightColors.white,
-        ));
   }
 }
 
