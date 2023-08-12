@@ -49,7 +49,7 @@ class ReminderViewModel extends ChangeNotifier {
   }
 
   Future<void> addReminder(BuildContext context,
-      {required PillModel pillModel, String? repeatDay}) async {
+      {required PillModel pillModel, required int repeatDay}) async {
     final DateTime initialDate =
         Provider.of<DateViewModel>(context, listen: false).initialSelectedDate;
     final DateTime date = DateTime(
@@ -60,20 +60,15 @@ class ReminderViewModel extends ChangeNotifier {
       selectTime.minute,
     );
 
-    if ((repeatDay?.isEmpty ?? false) && selectedDays.isEmpty) {
-      print("one");
-      await _addPillAndNotification(context, pillModel, date, repeatDay);
-    } else if (repeatDay?.isNotEmpty ?? false) {
-      print("repeat");
-      final int repeatDayInt = repeatDay!.isNotEmpty ? int.parse(repeatDay) : 0;
-      for (var i = 0; i < repeatDayInt; i++) {
-        final updatedDate = date.add(Duration(days: i));
-        print(updatedDate);
+    if (selectedDays.isEmpty && repeatDay <= 1) {
+      _addPillAndNotification(context, pillModel, date, repeatDay: repeatDay);
+    } else if (selectedDays.isEmpty && repeatDay > 1) {
+      for (var i = 0; i < repeatDay; i++) {
         await _addPillAndNotification(
-            context, pillModel, updatedDate, repeatDay);
+            context, pillModel, date.add(Duration(days: i)),
+            repeatDay: repeatDay);
       }
     } else if (selectedDays.isNotEmpty) {
-      print("selected days");
       for (var element in selectedDays) {
         final DateTime selectDate = DateTime(
           element.year,
@@ -82,41 +77,44 @@ class ReminderViewModel extends ChangeNotifier {
           selectTime.hour,
           selectTime.minute,
         );
-        await _addPillAndNotification(
-            context, pillModel, selectDate, repeatDay);
+
+        _addPillAndNotification(context, pillModel, selectDate,
+            repeatDay: repeatDay);
       }
     }
-
-    selectedDays = [];
-    notifyListeners();
   }
 
-  Future<void> _addPillAndNotification(BuildContext context,
-      PillModel pillModel, DateTime date, String? repeatDay) async {
-    await _addPill(context,
-        pillModel: pillModel, date: date, repeatDay: repeatDay);
-    _addNotification(pillModel: pillModel, date: date);
+  Future<void> _addPillAndNotification(
+      BuildContext context, PillModel pillModel, DateTime date,
+      {required int repeatDay}) async {
+    var uuid = const Uuid();
+    _addPill(context,
+        pillModel: pillModel..id = uuid.v4().hashCode,
+        date: date,
+        repeatDay: repeatDay);
+
+    _addNotification(pillModel: pillModel..id = uuid.v4().hashCode, date: date);
   }
 
-  Future<void> _addPill(BuildContext context,
+  void _addPill(BuildContext context,
       {required PillModel pillModel,
       required DateTime date,
-      String? repeatDay}) async {
-    var uuid = const Uuid();
-    await context.read<TabViewModel>().hiveOperation.addItem(ReminderModel(
-          uuid: uuid.v4(),
+      required int repeatDay}) {
+    context.read<TabViewModel>().hiveOperation.addItem(ReminderModel(
+          uuid: pillModel.id,
           pill: pillModel,
           date: date,
-          repeatDay:
-              repeatDay?.isNotEmpty ?? false ? int.parse(repeatDay!) : null,
+          repeatDay: repeatDay,
         ));
   }
 
-  void _addNotification(
-      {required PillModel pillModel, required DateTime date}) {
-    print("notifi: $date");
+  void _addNotification({
+    required PillModel pillModel,
+    required DateTime date,
+  }) {
+    if (pillModel.id == null) return;
     _notificationManager.showNotification(
-      id: pillModel.id.hashCode,
+      id: pillModel.id!,
       date: date,
       title: S.current.appBarTitle,
       body: pillModel.note ?? "",

@@ -26,7 +26,6 @@ class DateViewModel extends ChangeNotifier {
 
   void selectDate(DateTime selectedDate) {
     isSelect();
-    print("as: $selectedDate");
     initialSelectedDate = selectedDate;
     notifyListeners();
   }

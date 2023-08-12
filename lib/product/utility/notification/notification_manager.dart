@@ -32,7 +32,7 @@ abstract class INotificationManager {
     final bool schedule = false,
     final int? interval,
   });
-  Future<void> cancelNotification(int id);
+  Future<void> cancelNotification();
 }
 
 class AwesomeLocalNotification extends INotificationManager {
@@ -46,6 +46,7 @@ class AwesomeLocalNotification extends INotificationManager {
             channelKey: 'basic_channel',
             channelName: 'Basic notifications',
             channelDescription: 'Notification channel for basic tests',
+            groupKey: 'basic_channel_group',
             channelShowBadge: false,
             defaultRingtoneType: DefaultRingtoneType.Alarm,
             importance: NotificationImportance.High,
@@ -88,23 +89,29 @@ class AwesomeLocalNotification extends INotificationManager {
     final int? interval,
   }) async {
     assert(!schedule || (schedule && interval != null));
-    print(bigPicture);
-    print(date);
+
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
         channelKey: 'basic_channel',
+        groupKey: 'basic_channel_group',
         title: title,
         body: body,
         summary: summary,
         category: notificationCategory,
         payload: payload,
         notificationLayout: notificationLayout,
-        bigPicture: 'asset://$bigPicture',
-        wakeUpScreen: true,
       ),
       actionButtons: actionButtons,
-      schedule: NotificationCalendar.fromDate(date: date, repeats: true),
+      schedule: NotificationCalendar(
+        year: date.year,
+        month: date.month,
+        day: date.day,
+        hour: date.hour,
+        minute: date.minute,
+        second: date.second,
+        millisecond: date.millisecond,
+      ),
     );
   }
 
@@ -130,13 +137,14 @@ class AwesomeLocalNotification extends INotificationManager {
         foregroundStartMode: ForegroundStartMode.stick,
         foregroundServiceType: ForegroundServiceType.phoneCall,
         content: NotificationContent(
-            id: 2341234,
-            body: 'Service is running!',
-            title: 'Android Foreground Service',
-            channelKey: 'basic_channel',
-            bigPicture: 'asset://assets/images/android-bg-worker.jpg',
-            notificationLayout: NotificationLayout.BigPicture,
-            category: NotificationCategory.Service),
+          id: 2341234,
+          body: 'Service is running!',
+          title: 'Android Foreground Service',
+          channelKey: 'basic_channel',
+          bigPicture: 'asset://assets/images/android-bg-worker.jpg',
+          notificationLayout: NotificationLayout.BigPicture,
+          category: NotificationCategory.Reminder,
+        ),
         actionButtons: [
           NotificationActionButton(
               key: 'SHOW_SERVICE_DETAILS', label: 'Show details')
@@ -145,8 +153,9 @@ class AwesomeLocalNotification extends INotificationManager {
 
   //cancel notification id
   @override
-  Future<void> cancelNotification(int id) async {
+  Future<void> cancelNotification() async {
     await AwesomeNotifications().cancelAll();
+    await AwesomeNotifications().cancelAllSchedules();
     /* await AwesomeNotifications().cancel(id);
     await AwesomeNotifications().cancelSchedule(id); */
   }

@@ -20,13 +20,12 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<TabViewModel>()
-        .initDatabase()
-        .then((value) => context.router.pushAndPopUntil(
-              const TabRoute(),
-              predicate: (route) => false,
-            ));
+    context.read<TabViewModel>().initDatabase().then((value) {
+      context.router.pushAndPopUntil(
+        const TabRoute(),
+        predicate: (route) => false,
+      );
+    });
   }
 
   @override

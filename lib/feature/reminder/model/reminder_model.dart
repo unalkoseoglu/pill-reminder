@@ -9,7 +9,7 @@ part 'reminder_model.g.dart';
 @HiveType(typeId: HiveTypes.reminderModelHiveType)
 class ReminderModel with EquatableMixin, HiveModelMixin {
   @HiveField(0)
-  String uuid;
+  int? uuid;
   @HiveField(1)
   PillModel pill;
   @HiveField(2)
@@ -46,7 +46,7 @@ class ReminderModel with EquatableMixin, HiveModelMixin {
   String get key => userKey;
 
   ReminderModel copyWith({
-    required String uuid,
+    required int? uuid,
     required PillModel pill,
     required DateTime date,
     List<DateTime>? selectDayList,

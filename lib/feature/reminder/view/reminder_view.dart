@@ -19,7 +19,6 @@ import 'package:pill_reminder/product/widget/button/week_days_selected_button.da
 import 'package:pill_reminder/product/widget/card/pill_card.dart';
 import 'package:pill_reminder/product/widget/textField/outline_text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 enum _CourseDuration { every, selectedDays }
 
@@ -320,17 +319,17 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
     return ElevatedButton(
         onPressed: nameController.text.isNotEmpty
             ? () {
-                var uuid = const Uuid();
-
+                final int repeatDay = repeatDayController.text.isNotEmpty
+                    ? int.parse(repeatDayController.text)
+                    : 1;
                 context.read<ReminderViewModel>().addReminder(
                       context,
                       pillModel: PillModel(
-                        id: uuid.v4().hashCode,
                         name: nameController.text,
                         note: noteController.text,
                         amount: amountController.text,
                       ),
-                      repeatDay: repeatDayController.text,
+                      repeatDay: repeatDay,
                     );
               }
             : null,

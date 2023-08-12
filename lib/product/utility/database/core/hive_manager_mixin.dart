@@ -12,8 +12,8 @@ mixin HiveManagerMixin<T> {
   /// The function `start` opens a Hive box of type `T` with the given key asynchronously.
   Future<void> start() async {
     if (Hive.isBoxOpen(_key)) return;
-    print("object");
-    _box = await Hive.openBox<T>(_key);
+    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+    _box = await Hive.openBox<T>(_key, path: appDocumentsDir.path);
   }
 
   /// The `clear` function clears all data in the `box`.

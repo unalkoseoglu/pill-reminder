@@ -8,7 +8,7 @@ part 'pill_model.g.dart';
 @HiveType(typeId: HiveTypes.pillModelHiveType)
 class PillModel with EquatableMixin, HiveModelMixin {
   @HiveField(0)
-  final int? id;
+  int? id;
   @HiveField(1)
   final String? name;
   @HiveField(2)
@@ -38,7 +38,7 @@ class PillModel with EquatableMixin, HiveModelMixin {
     String? image,
   }) {
     return PillModel(
-      id: id ?? this.id,
+      id: id,
       name: name ?? this.name,
       note: note ?? this.note,
       amount: amount ?? this.amount,

@@ -7,7 +7,7 @@ final class AppInit {
 
   static Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await HiveDatabaseManager().start();
     await AwesomeLocalNotification().initialize();
+    await HiveDatabaseManager().start();
   }
 }
