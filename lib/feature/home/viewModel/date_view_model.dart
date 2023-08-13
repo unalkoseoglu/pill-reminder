@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pill_reminder/product/constant/duration_constatn.dart';
 
 class DateViewModel extends ChangeNotifier {
   DateViewModel() {
@@ -39,8 +38,9 @@ class DateViewModel extends ChangeNotifier {
     tabController.addListener(
       () {
         final currentIndex = tabController.index;
-        tabController.animateTo(currentIndex,
-            duration: DurationConstant.millisecond200);
+        tabController.animateTo(
+          currentIndex,
+        );
         selectDate(tabDates[currentIndex]);
       },
     );

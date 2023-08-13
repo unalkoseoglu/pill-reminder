@@ -1,0 +1,1 @@
+enum CourseDuration { every, selectedDays }

@@ -21,5 +21,7 @@ class HiveOperation<T extends HiveModelMixin> with HiveManagerMixin<T> {
     return _box.listenable();
   }
 
-  Future<void> deleteItem(String key) => _box.delete(key);
+  Future<void> deleteItem(int key) => _box.delete(key);
+
+  bool contains(int key) => _box.containsKey(key);
 }

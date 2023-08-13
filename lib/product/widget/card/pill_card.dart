@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pill_reminder/core/extension/image_extension.dart';
+import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
+import 'package:pill_reminder/product/enum/pills_enum.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_size_extension.dart';
 import 'package:pill_reminder/product/init/theme/light/light_colors.dart';
 
 class PillCard extends StatelessWidget {
-  const PillCard(
-      {super.key,
-      required this.image,
-      required this.name,
-      required this.amount,
-      required this.time,
-      this.note,
-      this.repeatDay});
-  final String image;
-  final String name;
-  final String? note;
-  final String amount;
+  const PillCard({
+    super.key,
+    this.repeatDay,
+    required this.pillModel,
+    required this.time,
+  });
+  final PillModel pillModel;
   final String? repeatDay;
   final String time;
   @override
@@ -36,7 +33,7 @@ class PillCard extends StatelessWidget {
           children: [
             Flexible(
                 child: Padding(
-              padding: context.paddingLow,
+              padding: context.horizontalPaddingLow,
               child: _image(context),
             )),
             Ink(
@@ -88,30 +85,41 @@ class PillCard extends StatelessWidget {
         ]);
   }
 
-  Image _image(BuildContext context) {
+  Widget _image(BuildContext context) {
     return Image.asset(
-      image.toPng,
-      height: context.dynamicHeight(.1),
-      width: context.dynamicWidth(.16),
+      pillModel.image?.toIcon ?? PillsEnum.capsulePill.path.toIcon,
+      height: context.dynamicHeight(.08),
+      width: context.dynamicWidth(.14),
     );
   }
 
   ListTile _titleSubtitle(BuildContext context) {
     return ListTile(
       title: Text(
-        name,
-        style: note != null
-            ? context.textTheme.bodyLarge
+        pillModel.name ?? "---",
+        style: pillModel.note != null
+            ? context.textTheme.displaySmall
+                ?.copyWith(fontWeight: FontWeight.bold)
             : context.textTheme.displaySmall,
+        maxLines: 2,
       ),
-      subtitle: note != null ? Text(note ?? "") : null,
+      subtitle: pillModel.note != null
+          ? Text(
+              pillModel.note ?? "",
+              style: context.textTheme.titleMedium?.copyWith(
+                color: LightColors.apricotWash,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+            )
+          : null,
     );
   }
 
   Column _amountAndTime(BuildContext context) {
     return Column(
       children: [
-        _IconTitleRow(FontAwesomeIcons.capsules, amount),
+        _IconTitleRow(FontAwesomeIcons.capsules, pillModel.amount ?? ""),
         Padding(
           padding: context.onlyTopPaddingLow,
           child: _IconTitleRow(FontAwesomeIcons.solidClock, time),
@@ -133,10 +141,14 @@ class _IconTitleRow extends StatelessWidget {
         size: 20,
         color: LightColors.blueFeather,
       ),
-      Text(
-        title,
-        style: context.textTheme.titleSmall
-            ?.copyWith(color: context.colorScheme.onSecondary),
+      Flexible(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          textScaleFactor: context.textScaleFactor,
+          style: context.textTheme.titleSmall
+              ?.copyWith(color: context.colorScheme.onSecondary),
+        ),
       )
     ]);
   }

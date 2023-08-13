@@ -32,7 +32,8 @@ abstract class INotificationManager {
     final bool schedule = false,
     final int? interval,
   });
-  Future<void> cancelNotification();
+  Future<void> cancelNotification(int id);
+  Future<void> cancelAllNotification();
 }
 
 class AwesomeLocalNotification extends INotificationManager {
@@ -100,6 +101,7 @@ class AwesomeLocalNotification extends INotificationManager {
         summary: summary,
         category: notificationCategory,
         payload: payload,
+        bigPicture: "asset://$bigPicture",
         notificationLayout: notificationLayout,
       ),
       actionButtons: actionButtons,
@@ -151,11 +153,19 @@ class AwesomeLocalNotification extends INotificationManager {
         ]);
   }
 
-  //cancel notification id
+  //cancel notification all
   @override
-  Future<void> cancelNotification() async {
+  Future<void> cancelAllNotification() async {
     await AwesomeNotifications().cancelAll();
     await AwesomeNotifications().cancelAllSchedules();
+    /* await AwesomeNotifications().cancel(id);
+    await AwesomeNotifications().cancelSchedule(id); */
+  }
+
+  //cancel notification id
+  @override
+  Future<void> cancelNotification(int id) async {
+    await AwesomeNotifications().cancel(id);
     /* await AwesomeNotifications().cancel(id);
     await AwesomeNotifications().cancelSchedule(id); */
   }

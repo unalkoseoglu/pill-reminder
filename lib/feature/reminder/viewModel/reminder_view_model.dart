@@ -5,6 +5,8 @@ import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
 import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
+import 'package:pill_reminder/product/enum/course_duration.dart';
+import 'package:pill_reminder/product/enum/pills_enum.dart';
 import 'package:pill_reminder/product/utility/database/operation/hive_operation.dart';
 import 'package:pill_reminder/product/utility/notification/notification_manager.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,8 @@ class ReminderViewModel extends ChangeNotifier {
   late INotificationManager _notificationManager;
   late TextEditingController timeController;
 
+  PillsEnum selectedImageEnum = PillsEnum.capsulePill;
+  CourseDuration courseDuration = CourseDuration.every;
   TimeOfDay selectTime = TimeOfDay.now();
 
   final DateTime now = DateTime.now().add(const Duration(days: -1));
@@ -37,6 +41,12 @@ class ReminderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changedRepeatOrSelectDays(CourseDuration? value) {
+    if (value == null) return;
+    courseDuration = value;
+    notifyListeners();
+  }
+
   void changeTextController(String text, String controllerText) {
     controllerText = text;
     notifyListeners();
@@ -45,6 +55,11 @@ class ReminderViewModel extends ChangeNotifier {
   void selectedTime(Time time) {
     selectTime = time;
     timeController.text = "${time.hour}:${time.minute}";
+    notifyListeners();
+  }
+
+  void selectImageChange(PillsEnum imageSelect) {
+    selectedImageEnum = imageSelect;
     notifyListeners();
   }
 
@@ -82,6 +97,8 @@ class ReminderViewModel extends ChangeNotifier {
             repeatDay: repeatDay);
       }
     }
+    selectedDays = [];
+    repeatDay = 1;
   }
 
   Future<void> _addPillAndNotification(
@@ -119,6 +136,7 @@ class ReminderViewModel extends ChangeNotifier {
       title: S.current.appBarTitle,
       body: pillModel.note ?? "",
       summary: pillModel.name ?? "",
+      bigPicture: pillModel.image,
       notificationCategory: NotificationCategory.Alarm,
     );
   }

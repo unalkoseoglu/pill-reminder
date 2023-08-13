@@ -38,7 +38,7 @@ class PillModel with EquatableMixin, HiveModelMixin {
     String? image,
   }) {
     return PillModel(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
       note: note ?? this.note,
       amount: amount ?? this.amount,
