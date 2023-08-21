@@ -1,19 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:pill_reminder/feature/home/view/mixin/home_view_mixin.dart';
 import 'package:pill_reminder/feature/home/viewModel/date_view_model.dart';
-import 'package:pill_reminder/feature/home/viewModel/home_view_model.dart';
 import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
 import 'package:pill_reminder/product/constant/duration_constatn.dart';
-import 'package:pill_reminder/product/extension/context/context_border_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_general_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_padding_extension.dart';
 import 'package:pill_reminder/product/extension/context/context_size_extension.dart';
-import 'package:pill_reminder/product/init/theme/light/light_colors.dart';
-import 'package:pill_reminder/product/widget/card/pill_card.dart';
+import 'package:pill_reminder/product/widget/builder/reminder_list_builder.dart';
 import 'package:pill_reminder/product/widget/date/date_time_button.dart';
 import 'package:provider/provider.dart';
 
@@ -25,14 +22,19 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+class _HomeViewState extends State<HomeView>
+    with TickerProviderStateMixin, HomeViewMixin {
   late final TabController _tabController;
   late final List<DateTime> _tabDates;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 20, vsync: this);
+    _tabController = TabController(
+      length: 20,
+      vsync: this,
+      initialIndex: 5,
+    );
     _tabDates = context.read<DateViewModel>().tabDates;
     context.read<DateViewModel>().tabListener(context, _tabController);
   }
@@ -71,6 +73,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                               children: [
                                 ReminderListBuilder(
                                   reminderList: reminderList,
+                                  onTap: (index) =>
+                                      showReminderDetail(reminderList[index]),
                                 ),
                                 context.emptySizedHeightBoxHigh,
                               ],
@@ -122,169 +126,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               duration: DurationConstant.millisecond200),
         ),
       ),
-    );
-  }
-}
-
-class ReminderListBuilder extends StatelessWidget {
-  const ReminderListBuilder({super.key, required this.reminderList});
-  final List<ReminderModel> reminderList;
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
-    final DateTime date = context.watch<DateViewModel>().initialSelectedDate;
-    return ListView.builder(
-      itemCount: reminderList.length,
-      padding: context.paddingNormal,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        return context
-                .read<DateViewModel>()
-                .compareInitialDate(date, reminderList[index].date)
-            ? Padding(
-                padding: context.onlyBottomPaddingNormal,
-                child: InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      enableDrag: true,
-                      showDragHandle: true,
-                      backgroundColor: context.colorScheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: context.normalBorderRadius,
-                      ),
-                      builder: (context) {
-                        return Padding(
-                          padding: context.paddingNormal.copyWith(top: 0),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: LightColors.white,
-                              borderRadius: context.normalBorderRadius,
-                            ),
-                            child: Padding(
-                              padding: context.paddingLow,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ListTile(
-                                      title: Text(
-                                    "İlaç Detayları",
-                                    style: context.textTheme.displaySmall,
-                                    textAlign: TextAlign.center,
-                                  )),
-                                  Divider(
-                                    color: context.colorScheme.primary,
-                                  ),
-                                  ListTile(
-                                    title: Text(
-                                      DateFormat("d MMMM EEEE - HH:mm",
-                                              Intl.defaultLocale)
-                                          .format(reminderList[index].date),
-                                      textAlign: TextAlign.center,
-                                      style: context.textTheme.bodyLarge
-                                          ?.copyWith(
-                                              color: LightColors.oregonBlue,
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: context.verticalPaddingLow,
-                                    child: PillCard(
-                                        pillModel: reminderList[index].pill,
-                                        repeatDay:
-                                            reminderList[index].repeatDay !=
-                                                    null
-                                                ? reminderList[index]
-                                                    .repeatDay
-                                                    .toString()
-                                                : "",
-                                        time: DateFormat.Hm()
-                                            .format(reminderList[index].date)),
-                                  ),
-                                  Divider(
-                                    color: context.colorScheme.primary,
-                                  ),
-                                  Padding(
-                                    padding: context.verticalPaddingNormal,
-                                    child: Wrap(
-                                      runSpacing: 10,
-                                      spacing: 10,
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        ElevatedButton.icon(
-                                          onPressed: () {},
-                                          icon: const FaIcon(
-                                              FontAwesomeIcons.check),
-                                          label: Text(
-                                            "Alındı",
-                                            style: context.textTheme.titleMedium
-                                                ?.copyWith(
-                                                    color: LightColors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton.icon(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                LightColors.apricotWash,
-                                          ),
-                                          onPressed: () {},
-                                          icon: const FaIcon(
-                                              FontAwesomeIcons.edit),
-                                          label: Text(
-                                            "Tarihi değiştir",
-                                            style: context.textTheme.titleMedium
-                                                ?.copyWith(
-                                                    color: LightColors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton.icon(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                LightColors.sugarCoral,
-                                          ),
-                                          onPressed: () {
-                                            context
-                                                .read<HomeViewModel>()
-                                                .deletePillReminder(
-                                                  context,
-                                                  pillID: reminderList[index]
-                                                      .pill
-                                                      .id,
-                                                );
-                                          },
-                                          icon: const FaIcon(
-                                              FontAwesomeIcons.xmark),
-                                          label: Text(
-                                            "Delete",
-                                            style: context.textTheme.titleMedium
-                                                ?.copyWith(
-                                                    color: LightColors.white),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: PillCard(
-                      pillModel: reminderList[index].pill,
-                      repeatDay: reminderList[index].repeatDay != null
-                          ? reminderList[index].repeatDay.toString()
-                          : "",
-                      time: DateFormat.Hm().format(reminderList[index].date)),
-                ),
-              )
-            : const SizedBox.shrink();
-      },
     );
   }
 }

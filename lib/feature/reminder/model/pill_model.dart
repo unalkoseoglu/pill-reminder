@@ -1,12 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pill_reminder/product/utility/database/core/hive_types.dart';
-import 'package:pill_reminder/product/utility/database/model/hive_model.dart';
 
 part 'pill_model.g.dart';
 
 @HiveType(typeId: HiveTypes.pillModelHiveType)
-class PillModel with EquatableMixin, HiveModelMixin {
+class PillModel with EquatableMixin {
   @HiveField(0)
   int? id;
   @HiveField(1)
@@ -28,8 +27,6 @@ class PillModel with EquatableMixin, HiveModelMixin {
   @override
   List<Object?> get props => [id, name, note, amount, image];
 
-  @override
-  String get key => "$name-$id";
   PillModel copyWith({
     int? id,
     String? name,

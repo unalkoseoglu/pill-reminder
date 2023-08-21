@@ -1,38 +1,47 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
+import 'package:pill_reminder/feature/reminder/model/reminder_model.dart';
 import 'package:pill_reminder/feature/tab/tab_view_model.dart';
+import 'package:pill_reminder/product/utility/database/operation/hive_operation.dart';
 import 'package:pill_reminder/product/utility/notification/notification_manager.dart';
 import 'package:provider/provider.dart';
 
-import '../../../product/utility/database/operation/hive_operation.dart';
-
 class HomeViewModel extends ChangeNotifier {
   HomeViewModel() {
-    notificationManager = AwesomeLocalNotification();
-    hiveOperation = HiveOperation<PillModel>();
+    _notificationManager = AwesomeLocalNotification();
   }
 
-  late INotificationManager notificationManager;
-  late HiveOperation<PillModel> hiveOperation;
+  late INotificationManager _notificationManager;
 
-  void deletePillReminder(BuildContext context, {required int? pillID}) {
-    print(pillID);
-    if (pillID != null) {
-      deletePill(context, pillID);
-      cancelNotification(pillID);
+  void deletePillReminder(BuildContext context, {required int? uuid}) {
+    if (uuid != null) {
+      deletePill(context, uuid);
+      cancelNotification(uuid);
+      notifyListeners();
+      context.popRoute();
     }
-
-    notifyListeners();
   }
 
-  void deletePill(BuildContext context, int id) {
-    final isContains = context.read<TabViewModel>().hiveOperation.contains(id);
-    print(isContains);
-    context.read<TabViewModel>().hiveOperation.deleteItem(id);
-    notifyListeners();
+  Future<void> deletePill(BuildContext context, int uuid) async {
+    bool isContains = context.read<TabViewModel>().hiveOperation.contains(uuid);
+    debugPrint("Delete model contains: $isContains");
+    await context.read<TabViewModel>().hiveOperation.deleteItem(uuid);
   }
 
-  void cancelNotification(int id) {
-    notificationManager.cancelNotification(id);
+  Future<void> cancelNotification(int id) async {
+    await _notificationManager.cancelNotification(id);
+  }
+
+  void pillTake(BuildContext context, ReminderModel reminderModel,
+      {bool isTake = false}) {
+    HiveOperation<ReminderModel> hiveOperation =
+        context.read<TabViewModel>().hiveOperation;
+    final ReminderModel? getReminderModel =
+        hiveOperation.getItem(reminderModel.uuid);
+    if (getReminderModel != null) {
+      hiveOperation.addOrUpdateItem(
+          getReminderModel.uuid, getReminderModel..isTake = isTake);
+      cancelNotification(reminderModel.uuid!);
+    }
   }
 }

@@ -3,11 +3,10 @@ import 'package:pill_reminder/feature/reminder/model/pill_model.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:pill_reminder/product/utility/database/core/hive_types.dart';
-import 'package:pill_reminder/product/utility/database/model/hive_model.dart';
 part 'reminder_model.g.dart';
 
 @HiveType(typeId: HiveTypes.reminderModelHiveType)
-class ReminderModel with EquatableMixin, HiveModelMixin {
+class ReminderModel with EquatableMixin {
   @HiveField(0)
   int? uuid;
   @HiveField(1)
@@ -39,11 +38,6 @@ class ReminderModel with EquatableMixin, HiveModelMixin {
   @override
   List<Object?> get props =>
       [uuid, pill, date, selectDayList, repeatDay, isTake, isSnooze, isSkip];
-  static const String userKey = 'user';
-
-  @override
-  // Model unique key
-  String get key => userKey;
 
   ReminderModel copyWith({
     required int? uuid,

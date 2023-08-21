@@ -17,7 +17,8 @@ class DateViewModel extends ChangeNotifier {
 
   void _dates() {
     tabDates = List.generate(_daysCount, (index) {
-      final now = DateTime.now().add(Duration(days: index));
+      final DateTime date = DateTime.now().add(const Duration(days: -4));
+      final now = date.add(Duration(days: index));
       return now;
     });
     notifyListeners();

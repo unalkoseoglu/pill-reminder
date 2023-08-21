@@ -44,6 +44,7 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
         onBackground: LightColors.waterfall,
         error: LightColors.red,
         onError: LightColors.black,
+        inversePrimary: LightColors.white,
       );
 
   AppBarTheme get appBarTheme => AppBarTheme(
@@ -69,7 +70,7 @@ final class LightAppTheme extends AppTheme with DarkThemeInterface {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         backgroundColor: _appColorScheme.onPrimary,
         foregroundColor: LightColors.white,
-        textStyle: textTheme.displaySmall,
+        textStyle: textTheme.bodyLarge,
       ));
   OutlinedButtonThemeData get outlinedButtonThemeData =>
       OutlinedButtonThemeData(

@@ -77,7 +77,7 @@ class OutlineTextField extends StatelessWidget {
           label: label != null
               ? Text(
                   label!,
-                  style: context.textTheme.bodyMedium!.copyWith(
+                  style: context.textTheme.bodySmall!.copyWith(
                       color: LightColors.black, fontWeight: FontWeight.normal),
                 )
               : const SizedBox.shrink(),

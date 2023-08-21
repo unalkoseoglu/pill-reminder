@@ -35,7 +35,7 @@ final class LightColors {
   //* orange => [Color(0xFFFF9D00)]
   static const Color apricotWash = Color(0xfffba47e);
   //* green => [Color(0xFF00FF04)]
-  static const Color mistyMarsh = Color(0xffD4E2D4);
+  static const Color mistyMarsh = Color(0xffEFFCFC);
   static const Color catalan = Color(0xff469597);
   static const Color caulerpaLentillifera = Color(0xff5BA199);
   static const Color cantonJade = Color(0xffB7E4C7);

@@ -44,17 +44,23 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ColoredBox(
               color: context.colorScheme.primary,
               child: _openKeyboardVisibleHeader(context)),
           Expanded(
             child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Padding(
                 padding: context.horizontalPaddingNormal,
                 child: Column(
                   children: [
+                    Padding(
+                      padding: context.onlyTopPaddingLow,
+                      child: _medicineInfoTitle(context),
+                    ),
                     _nameTextField(context),
                     _noteTextField(context),
                     _amountTextField(context),
@@ -96,24 +102,16 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
                     Row(children: [
                       if (context.watch<ReminderViewModel>().courseDuration ==
                           CourseDuration.every)
-                        Expanded(
-                          child: Padding(
-                            padding: context.horizontalPaddingNormal,
-                            child: _repeatDayTextfield(context),
-                          ),
+                        Flexible(
+                          child: _repeatDayTextfield(context),
                         ),
-                      Expanded(
-                        child: Padding(
-                          padding: context.horizontalPaddingNormal,
-                          child: _timeSelectedTextField(context),
-                        ),
+                      context.emptySizedWidthBoxNormal,
+                      Flexible(
+                        child: _timeSelectedTextField(context),
                       ),
                     ]),
-                    Padding(
-                      padding: context.paddingNormal,
-                      child: _addReminderButton(),
-                    ),
-                    context.emptySizedHeightBoxLow,
+                    _addReminderButton(),
+                    context.emptySizedHeightBoxLow3x,
                   ],
                 ),
               ),
@@ -121,6 +119,14 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
           ),
         ],
       ),
+    );
+  }
+
+  Text _medicineInfoTitle(BuildContext context) {
+    return Text(
+      S.current.reminderMedicineInfoTitle,
+      style: context.textTheme.displaySmall,
+      textAlign: TextAlign.center,
     );
   }
 
@@ -164,8 +170,7 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
   Image _headerImage(BuildContext context) {
     return Image.asset(
       "doctor-pill".toPng,
-      fit: BoxFit.fitWidth,
-      height: context.dynamicHeight(.3),
+      height: context.dynamicHeight(.24),
       width: context.dynamicWidth(.8),
     );
   }
@@ -290,7 +295,7 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
         onChanged: viewModel.changedRepeatOrSelectDays,
       ),
       title: Text(
-        S.current.reminderRepeatDay,
+        S.current.reminderRepeat,
         style: context.textTheme.titleMedium,
       ),
     );
@@ -355,8 +360,11 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
   OutlineTextField _repeatDayTextfield(BuildContext context) {
     return OutlineTextField(
       controller: repeatDayController,
-      prefixIcon: const Icon(FontAwesomeIcons.solidCalendarDays),
-      label: S.current.reminderDay,
+      prefixIcon: const Icon(
+        FontAwesomeIcons.solidCalendarDays,
+        size: 20,
+      ),
+      label: S.current.reminderRepeatDay,
       hintText: S.current.reminderMaxRepeatDay,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textInputAction: TextInputAction.done,
@@ -379,27 +387,28 @@ class _ReminderViewState extends State<ReminderView> with ReminderViewMixin {
 
   ElevatedButton _addReminderButton() {
     return ElevatedButton(
-        onPressed: nameController.text.isNotEmpty
-            ? () {
-                final String pillImage =
-                    Provider.of<ReminderViewModel>(context, listen: false)
-                        .selectedImageEnum
-                        .path;
-                final int repeatDay = repeatDayController.text.isNotEmpty
-                    ? int.parse(repeatDayController.text)
-                    : 1;
-                context.read<ReminderViewModel>().addReminder(
-                      context,
-                      pillModel: PillModel(
-                        image: pillImage,
-                        name: nameController.text,
-                        note: noteController.text,
-                        amount: amountController.text,
-                      ),
-                      repeatDay: repeatDay,
-                    );
-              }
-            : null,
-        child: Center(child: Text(S.current.reminderAddReminder)));
+      onPressed: nameController.text.isNotEmpty
+          ? () {
+              final String pillImage =
+                  Provider.of<ReminderViewModel>(context, listen: false)
+                      .selectedImageEnum
+                      .path;
+              final int repeatDay = repeatDayController.text.isNotEmpty
+                  ? int.parse(repeatDayController.text)
+                  : 1;
+              context.read<ReminderViewModel>().addReminder(
+                    context,
+                    pillModel: PillModel(
+                      image: pillImage,
+                      name: nameController.text,
+                      note: noteController.text,
+                      amount: amountController.text,
+                    ),
+                    repeatDay: repeatDay,
+                  );
+            }
+          : null,
+      child: Text(S.current.reminderAddReminder),
+    );
   }
 }

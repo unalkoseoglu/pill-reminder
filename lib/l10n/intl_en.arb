@@ -3,6 +3,7 @@
     "appBarTitle":"Pill Reminder",
     "homeTitle":"Home",
     "homeNoReminder":"No Reminder",
+    "reminderMedicineInfoTitle": "Medication Information",
     "reminderMedicineName":"Name",
     "reminderMedicineNote":"Note",
     "reminderMedicine":"Paracematol XL2",

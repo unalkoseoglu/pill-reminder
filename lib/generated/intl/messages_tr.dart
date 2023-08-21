@@ -37,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Lütfen 7 günden fazla giriş yapmayın."),
         "reminderMedicine":
             MessageLookupByLibrary.simpleMessage("Parasetamol XL2"),
+        "reminderMedicineInfoTitle":
+            MessageLookupByLibrary.simpleMessage("İlaç Bilgileri"),
         "reminderMedicineName": MessageLookupByLibrary.simpleMessage("İsim"),
         "reminderMedicineNote": MessageLookupByLibrary.simpleMessage("Not"),
         "reminderMgMl": MessageLookupByLibrary.simpleMessage("mg/ml"),

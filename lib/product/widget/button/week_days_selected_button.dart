@@ -15,13 +15,13 @@ class WeekDaysSelectedButton extends StatefulWidget {
 
 class _WeekDaysSelectedButtonState extends State<WeekDaysSelectedButton> {
   final List<int> defaultDisplayedDays = [
+    DateTime.monday,
     DateTime.tuesday,
     DateTime.wednesday,
     DateTime.thursday,
     DateTime.friday,
     DateTime.saturday,
     DateTime.sunday,
-    DateTime.monday,
   ];
 
   @override
@@ -62,6 +62,7 @@ class _WeekDaysSelectedButtonState extends State<WeekDaysSelectedButton> {
   String getFormattedDate(DateTime date, int offset) {
     // Eğer bugünün tarihi seçilen tarihten büyükse (yani bugün seçilen gün geçmişte),
     // bir sonraki haftanın aynı gününü seçilen tarih olarak alalım.
+    print(date.isBefore(date.add(Duration(days: offset))));
     if (date.isAfter(date.add(Duration(days: offset)))) {
       date = date.add(const Duration(days: DateTime.daysPerWeek));
     }

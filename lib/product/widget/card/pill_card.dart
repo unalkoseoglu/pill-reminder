@@ -14,60 +14,90 @@ class PillCard extends StatelessWidget {
     this.repeatDay,
     required this.pillModel,
     required this.time,
+    this.isTake,
   });
   final PillModel pillModel;
+  final bool? isTake;
   final String? repeatDay;
   final String time;
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: _boxDecoration(),
-      child: Card(
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-                child: Padding(
-              padding: context.horizontalPaddingLow,
-              child: _image(context),
-            )),
-            Ink(
-              width: .001,
-              height: context.dynamicHeight(.1),
-              decoration: BoxDecoration(
-                  color: context.colorScheme.primary,
-                  boxShadow: [
-                    BoxShadow(
-                        color: context.colorScheme.primary,
-                        blurRadius: 10,
-                        spreadRadius: 1)
-                  ]),
+    return SizedBox(
+      height: context.dynamicHeight(.11),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SizedBox(
+            height: context.dynamicHeight(.1),
+            child: DecoratedBox(
+              decoration: _boxDecoration(),
+              child: Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                        child: Padding(
+                      padding: context.horizontalPaddingLow,
+                      child: _image(context),
+                    )),
+                    Ink(
+                      width: .001,
+                      height: context.dynamicHeight(.1),
+                      decoration: BoxDecoration(
+                          color: context.colorScheme.primary,
+                          boxShadow: [
+                            BoxShadow(
+                                color: context.colorScheme.primary,
+                                blurRadius: 10,
+                                spreadRadius: 1)
+                          ]),
+                    ),
+                    Flexible(flex: 2, child: _titleSubtitle(context)),
+                    Ink(
+                      width: .1,
+                      height: context.dynamicHeight(.1),
+                      decoration: BoxDecoration(
+                          color: context.colorScheme.primary,
+                          boxShadow: [
+                            BoxShadow(
+                                color: context.colorScheme.primary,
+                                blurRadius: 10,
+                                spreadRadius: 1)
+                          ]),
+                    ),
+                    Flexible(
+                        child: Padding(
+                      padding: context.horizontalPaddingLow,
+                      child: _amountAndTime(context),
+                    )),
+                  ],
+                ),
+              ),
             ),
-            Flexible(flex: 2, child: _titleSubtitle(context)),
-            Ink(
-              width: .1,
-              height: context.dynamicHeight(.1),
-              decoration: BoxDecoration(
-                  color: context.colorScheme.primary,
-                  boxShadow: [
-                    BoxShadow(
-                        color: context.colorScheme.primary,
-                        blurRadius: 10,
-                        spreadRadius: 1)
-                  ]),
-            ),
-            Flexible(
-                child: Padding(
-              padding: context.horizontalPaddingLow,
-              child: _amountAndTime(context),
-            )),
-          ],
-        ),
+          ),
+          if (isTake != null)
+            Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                child: CircleAvatar(
+                  backgroundColor: isTake!
+                      ? context.colorScheme.primary
+                      : context.colorScheme.error,
+                  child: Icon(
+                    isTake!
+                        ? FontAwesomeIcons.heartCircleCheck
+                        : FontAwesomeIcons.heartCircleXmark,
+                    color: context.colorScheme.inversePrimary,
+                  ),
+                ))
+        ],
       ),
     );
   }
@@ -118,6 +148,8 @@ class PillCard extends StatelessWidget {
 
   Column _amountAndTime(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _IconTitleRow(FontAwesomeIcons.capsules, pillModel.amount ?? ""),
         Padding(

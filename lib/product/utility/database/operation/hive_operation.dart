@@ -3,16 +3,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pill_reminder/product/utility/database/model/hive_model.dart';
 part '../core/hive_manager_mixin.dart';
 
-class HiveOperation<T extends HiveModelMixin> with HiveManagerMixin<T> {
-  void addOrUpdateItem(T model) => _box.put(model.key, model);
+class HiveOperation<T> with HiveManagerMixin<T> {
+  void addOrUpdateItem(dynamic key, T model) => _box.put(key, model);
 
-  T? getItem(String key) => _box.get(key);
+  T? getItem(dynamic key) => _box.get(key);
 
-  Future<void> addItem(T model) async {
-    await _box.add(model);
+  Future<void> addItem(dynamic key, T model) async {
+    return await _box.put(key, model);
   }
 
   List<T>? getAllItem() => _box.values.toList();
@@ -21,7 +20,7 @@ class HiveOperation<T extends HiveModelMixin> with HiveManagerMixin<T> {
     return _box.listenable();
   }
 
-  Future<void> deleteItem(int key) => _box.delete(key);
+  Future<void> deleteItem(dynamic key) => _box.delete(key);
 
-  bool contains(int key) => _box.containsKey(key);
+  bool contains(dynamic key) => _box.containsKey(key);
 }

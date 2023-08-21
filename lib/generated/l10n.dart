@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Medication Information`
+  String get reminderMedicineInfoTitle {
+    return Intl.message(
+      'Medication Information',
+      name: 'reminderMedicineInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Name`
   String get reminderMedicineName {
     return Intl.message(
